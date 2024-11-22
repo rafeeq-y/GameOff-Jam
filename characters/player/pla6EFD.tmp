@@ -1,7 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://70hjdxyos8u"]
+[gd_scene load_steps=19 format=3 uid="uid://70hjdxyos8u"]
 
 [ext_resource type="Script" path="res://characters/player/player.gd" id="1_uy166"]
-[ext_resource type="Resource" uid="uid://davgmhkq5vhb5" path="res://characters/player/default_movement.tres" id="2_fbtlx"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="2_wkmmj"]
 [ext_resource type="Theme" uid="uid://behvchumblm2g" path="res://ui/themes/debug.tres" id="3_j66qv"]
 [ext_resource type="Script" path="res://scripts/debug.gd" id="4_dydsx"]
@@ -10,7 +9,6 @@
 [ext_resource type="Script" path="res://characters/player/walking_state.gd" id="7_1vyik"]
 [ext_resource type="Script" path="res://characters/player/sprinting_state.gd" id="8_nnxqs"]
 [ext_resource type="Script" path="res://characters/player/dash_state.gd" id="9_0vv7y"]
-[ext_resource type="Script" path="res://characters/player/crouching_state.gd" id="11_gctk3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nreh4"]
 
@@ -220,7 +218,6 @@ _data = {
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIM", "OVERHEAD_SHAPE_CAST")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_uy166")
-movement = ExtResource("2_fbtlx")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 ANIM = NodePath("AnimationPlayer")
 OVERHEAD_SHAPE_CAST = NodePath("ShapeCast3D")
@@ -335,9 +332,5 @@ script = ExtResource("9_0vv7y")
 wait_time = 0.3
 one_shot = true
 
-[node name="CrouchingState" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("11_gctk3")
-
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
-[connection signal="dashgo" from="PlayerStateMachine/DashState" to="." method="_on_dash_state_dashgo"]
 [connection signal="timeout" from="PlayerStateMachine/DashState/DashTimer" to="PlayerStateMachine/DashState" method="_on_dash_timer_timeout"]

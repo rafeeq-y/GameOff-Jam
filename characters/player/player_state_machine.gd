@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 
 
 func on_state_transition(new_state_name: String):
-	var new_state: State = states.get(new_state_name)
+	var new_state = states.get(new_state_name)
 	
 	if new_state:
 		if new_state != CURRENT_STATE:

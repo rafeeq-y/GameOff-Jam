@@ -2,8 +2,10 @@ extends CharacterBody3D
 
 
 const SPEED = 5.0
+const SPRINT_SPEED = 7.0
 const JUMP_VELOCITY = 4.5
 
+@export var movement: PlayerMovementData
 
 @export_range(5,10,0.1) var CROUCH_SPEED: float = 7.0
 @export var MOUSE_SENSITIVITY: float = 0.5
@@ -12,6 +14,17 @@ const JUMP_VELOCITY = 4.5
 @export var CAMERA_CONTROLLER: Camera3D
 @export var ANIM: AnimationPlayer
 @export var OVERHEAD_SHAPE_CAST: ShapeCast3D
+
+@export var ACCELERATION: float = 0.1
+@export var DECELERATION: float = 0.25
+
+var input_dir
+var direction
+
+var dash: bool = false
+var can_move: bool = true
+
+var _speed: float = SPEED
 
 var _mouse_rotation: Vector3
 var _mouse_input : bool = false
@@ -87,14 +100,14 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace move actions with custom gameplay actions.
-	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if direction and can_move:
+		velocity.x = lerp(velocity.x, direction.x * _speed, ACCELERATION)
+		velocity.z = lerp(velocity.z, direction.z * _speed, ACCELERATION)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, DECELERATION)
+		velocity.z = move_toward(velocity.z, 0, DECELERATION)
 
 	move_and_slide()
 
@@ -102,3 +115,8 @@ func _physics_process(delta: float) -> void:
 func _on_animation_player_animation_started(anim_name: StringName) -> void:
 	if anim_name == "crouch":
 		_is_crouching=!_is_crouching
+
+
+func _on_dash_state_dashgo(direction) -> void:
+	velocity.x = direction.x * _speed
+	velocity.z = direction.z * _speed
