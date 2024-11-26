@@ -2,7 +2,7 @@ class_name PlayerStateMachine
 
 extends Node
 
-@export var CURRENT_STATE: State
+@export var current_state: State
 
 var states: Dictionary = {}
 
@@ -16,26 +16,26 @@ func _ready() -> void:
 			child.transition.connect(on_state_transition)
 		else:
 			push_warning("Child " + child.name + " is incompatible")
-	CURRENT_STATE.enter()
+	current_state.enter()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	CURRENT_STATE.update(delta)
-	Global.debug.add_property("State", CURRENT_STATE.name,1)
+	current_state.update(delta)
+	Global.debug.add_property("State", current_state.name,1)
 
 func _physics_process(delta: float) -> void:
-	CURRENT_STATE.physics_update(delta)
+	current_state.physics_update(delta)
 
 
 func on_state_transition(new_state_name: String):
 	var new_state = states.get(new_state_name)
 	
 	if new_state:
-		if new_state != CURRENT_STATE:
-			CURRENT_STATE.exit()
+		if new_state != current_state:
+			current_state.exit()
+			print("changingg states")
 			new_state.enter()
-			CURRENT_STATE = new_state
+			current_state = new_state
 	else:
 		push_warning("State: " + new_state_name + " does not exist")
-	

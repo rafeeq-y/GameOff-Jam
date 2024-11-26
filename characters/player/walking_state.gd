@@ -13,16 +13,15 @@ func update(delta):
 	if Input.is_action_just_pressed("dash"):
 		anim.pause()
 		transition.emit("DashState")
-
+	if Input.is_action_just_pressed("sprint"):
+		Global.player.is_sprinting = true
+		transition.emit("SprintingState")
 
 func enter() -> void:
-	Global.player._speed = Global.player.SPEED
+	Global.player._speed = Global.player.default_speed
 	anim.play("walking",-1,1)
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("sprint") and Global.player.is_on_floor():
-		transition.emit("SprintingState")
 
 func set_anim_speed(spd):
 	var alpha = remap(spd, 0.0, Global.player._speed, 0.0, 1.0)

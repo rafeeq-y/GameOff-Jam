@@ -1,7 +1,6 @@
 [gd_scene load_steps=21 format=3 uid="uid://70hjdxyos8u"]
 
 [ext_resource type="Script" path="res://characters/player/player.gd" id="1_uy166"]
-[ext_resource type="Resource" uid="uid://davgmhkq5vhb5" path="res://characters/player/default_movement.tres" id="2_fbtlx"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="2_wkmmj"]
 [ext_resource type="Theme" uid="uid://behvchumblm2g" path="res://ui/themes/debug.tres" id="3_j66qv"]
 [ext_resource type="Script" path="res://scripts/debug.gd" id="4_dydsx"]
@@ -10,6 +9,7 @@
 [ext_resource type="Script" path="res://characters/player/walking_state.gd" id="7_1vyik"]
 [ext_resource type="Script" path="res://characters/player/sprinting_state.gd" id="8_nnxqs"]
 [ext_resource type="Script" path="res://characters/player/dash_state.gd" id="9_0vv7y"]
+[ext_resource type="Script" path="res://characters/player/jumping_state.gd" id="11_111kb"]
 [ext_resource type="Script" path="res://characters/player/crouching_state.gd" id="11_gctk3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nreh4"]
@@ -220,7 +220,6 @@ _data = {
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIM", "OVERHEAD_SHAPE_CAST")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_uy166")
-movement = ExtResource("2_fbtlx")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 ANIM = NodePath("AnimationPlayer")
 OVERHEAD_SHAPE_CAST = NodePath("ShapeCast3D")
@@ -312,9 +311,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state")]
 script = ExtResource("5_ltv88")
-CURRENT_STATE = NodePath("IdleState")
+current_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("anim")]
 script = ExtResource("6_s0vmk")
@@ -324,9 +323,9 @@ anim = NodePath("../../AnimationPlayer")
 script = ExtResource("7_1vyik")
 anim = NodePath("../../AnimationPlayer")
 
-[node name="SprintingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("ANIM")]
+[node name="SprintingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("anim")]
 script = ExtResource("8_nnxqs")
-ANIM = NodePath("../../AnimationPlayer")
+anim = NodePath("../../AnimationPlayer")
 
 [node name="DashState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("9_0vv7y")
@@ -337,6 +336,9 @@ one_shot = true
 
 [node name="CrouchingState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("11_gctk3")
+
+[node name="JumpingState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("11_111kb")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
 [connection signal="dashgo" from="PlayerStateMachine/DashState" to="." method="_on_dash_state_dashgo"]

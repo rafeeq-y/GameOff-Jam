@@ -1,30 +1,32 @@
 extends CharacterBody3D
 
-
-const SPEED = 5.0
-const SPRINT_SPEED = 7.0
-const JUMP_VELOCITY = 4.5
-
-@export var movement: PlayerMovementData
+#@export var movement: PlayerMovementData
 
 @export_range(5,10,0.1) var CROUCH_SPEED: float = 7.0
-@export var MOUSE_SENSITIVITY: float = 0.5
 @export var TILT_LOWER_LIMIT:= deg_to_rad(-90)
 @export var TILT_UPPER_LIMIT:= deg_to_rad(90)
 @export var CAMERA_CONTROLLER: Camera3D
 @export var ANIM: AnimationPlayer
 @export var OVERHEAD_SHAPE_CAST: ShapeCast3D
 
-@export var ACCELERATION: float = 0.1
-@export var DECELERATION: float = 0.25
+@export_group("Movement")
+@export var acceleration: float = 0.1
+@export var deceleration: float = 0.25
+@export var default_speed: float = 5
+@export var jump_velocity: float = 4.5
+@export var sprint_speed: float = 7.0
+@export var mouse_sensitivity: float = 0.5
+
+
 
 var input_dir
 var direction
 
+var is_sprinting: bool = false
 var dash: bool = false
 var can_move: bool = true
 
-var _speed: float = SPEED
+var _speed: float = default_speed
 
 var _mouse_rotation: Vector3
 var _mouse_input : bool = false
@@ -55,8 +57,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	
 	if _mouse_input:
-		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
-		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
+		_rotation_input = -event.relative.x * mouse_sensitivity
+		_tilt_input = -event.relative.y * mouse_sensitivity
 		
 		#print(Vector2(_rotation_input , _tilt_input))
 
@@ -96,18 +98,19 @@ func _physics_process(delta: float) -> void:
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_velocity
+		$PlayerStateMachine.on_state_transition("JumpingState")
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace move actions with custom gameplay actions.
 	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction and can_move:
-		velocity.x = lerp(velocity.x, direction.x * _speed, ACCELERATION)
-		velocity.z = lerp(velocity.z, direction.z * _speed, ACCELERATION)
+		velocity.x = lerp(velocity.x, direction.x * _speed, acceleration)
+		velocity.z = lerp(velocity.z, direction.z * _speed, acceleration)
 	else:
-		velocity.x = move_toward(velocity.x, 0, DECELERATION)
-		velocity.z = move_toward(velocity.z, 0, DECELERATION)
+		velocity.x = move_toward(velocity.x, 0, deceleration)
+		velocity.z = move_toward(velocity.z, 0, deceleration)
 
 	move_and_slide()
 
