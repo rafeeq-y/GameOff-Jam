@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://70hjdxyos8u"]
+[gd_scene load_steps=22 format=3 uid="uid://70hjdxyos8u"]
 
 [ext_resource type="Script" path="res://characters/player/player.gd" id="1_uy166"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="2_wkmmj"]
@@ -217,6 +217,8 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2la5a"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_yqd6n"]
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIM", "OVERHEAD_SHAPE_CAST")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_uy166")
@@ -339,6 +341,10 @@ script = ExtResource("11_gctk3")
 
 [node name="JumpingState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("11_111kb")
+
+[node name="HoverObjectShapeCast" type="ShapeCast3D" parent="."]
+transform = Transform3D(2.46578, 0, 0, 0, 1.29369, 0, 0, 0, 1.11362, -0.796559, 2.22091, -1.24444)
+shape = SubResource("SphereShape3D_yqd6n")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
 [connection signal="dashgo" from="PlayerStateMachine/DashState" to="." method="_on_dash_state_dashgo"]

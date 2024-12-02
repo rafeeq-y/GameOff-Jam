@@ -52,6 +52,9 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("crouch"):
 		toggle_crouch()
+	
+	if event.is_action_pressed("grab"):
+		_toggle_force()
 
 func _unhandled_input(event: InputEvent) -> void:
 	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
@@ -84,7 +87,6 @@ func _ready() -> void:
 	Global.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	OVERHEAD_SHAPE_CAST.add_exception($".")
-
 
 func _physics_process(delta: float) -> void:
 	
@@ -123,3 +125,16 @@ func _on_animation_player_animation_started(anim_name: StringName) -> void:
 func _on_dash_state_dashgo(direction) -> void:
 	velocity.x = direction.x * _speed
 	velocity.z = direction.z * _speed
+
+
+func _toggle_force() -> void:
+	var space_state = CAMERA_CONTROLLER.get_world_3d().direct_space_state
+	var screen_center = get_viewport().size /2
+	var origin = CAMERA_CONTROLLER.project_ray_origin(screen_center)
+	var end = CAMERA_CONTROLLER.project_ray_normal(screen_center) * 1000
+	var query = PhysicsRayQueryParameters3D.create(origin, end)
+	query.collide_with_bodies = true
+	var result = space_state.intersect_ray(query)
+	var collider = result.get("collider")
+	print(result)
+	
