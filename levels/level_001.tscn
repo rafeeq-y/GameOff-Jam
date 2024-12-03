@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://cn1gsy15bkaff" path="res://materials/grid.tres" id="2_x5xie"]
 [ext_resource type="Texture2D" uid="uid://ivvpsi314b34" path="res://textures/grid.jpg" id="3_yfwkt"]
 [ext_resource type="PackedScene" uid="uid://70hjdxyos8u" path="res://characters/player/player.tscn" id="4_liofc"]
-[ext_resource type="Script" path="res://scripts/grabbable_component.gd" id="5_lsypu"]
+[ext_resource type="Script" path="res://scripts/interaction_component.gd" id="5_lsypu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gd0ev"]
 material = ExtResource("2_x5xie")
@@ -193,5 +193,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.76837e-07, 5.96046e-08, -2
 mesh = SubResource("BoxMesh_kpwyx")
 skeleton = NodePath("../..")
 
-[node name="GrabbableComponent" type="Node" parent="GrabbableBox"]
+[node name="InteractionComponent" type="Node" parent="GrabbableBox"]
 script = ExtResource("5_lsypu")

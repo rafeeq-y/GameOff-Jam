@@ -18,6 +18,7 @@ extends CharacterBody3D
 @export var mouse_sensitivity: float = 0.5
 
 
+var interact_cast_result
 
 var input_dir
 var direction
@@ -136,5 +137,9 @@ func _toggle_force() -> void:
 	query.collide_with_bodies = true
 	var result = space_state.intersect_ray(query)
 	var collider = result.get("collider")
-	print(result)
-	
+	interact_cast_result = collider
+	interact()
+
+func interact() -> void:
+	if interact_cast_result and interact_cast_result.has_user_signal("interacted"):
+		interact_cast_result.emit_signal("interacted")
