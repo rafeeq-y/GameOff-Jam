@@ -34,7 +34,6 @@ func on_state_transition(new_state_name: String):
 	if new_state:
 		if new_state != current_state:
 			current_state.exit()
-			print("changingg states")
 			new_state.enter()
 			current_state = new_state
 	else:
