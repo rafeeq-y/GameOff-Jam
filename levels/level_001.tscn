@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://b1yleqbb8tc7x"]
+[gd_scene load_steps=19 format=3 uid="uid://b1yleqbb8tc7x"]
 
 [ext_resource type="PackedScene" uid="uid://btv0a42cgxt8g" path="res://levels/WE_test.tscn" id="1_db21n"]
 [ext_resource type="Material" uid="uid://cn1gsy15bkaff" path="res://materials/grid.tres" id="2_x5xie"]
 [ext_resource type="Texture2D" uid="uid://ivvpsi314b34" path="res://textures/grid.jpg" id="3_yfwkt"]
 [ext_resource type="PackedScene" uid="uid://70hjdxyos8u" path="res://characters/player/player.tscn" id="4_liofc"]
+[ext_resource type="Script" path="res://levels/grabbable_box.gd" id="5_fayr5"]
 [ext_resource type="Script" path="res://scripts/interaction_component.gd" id="5_lsypu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gd0ev"]
@@ -191,8 +192,9 @@ shape = SubResource("ConcavePolygonShape3D_j6kcl")
 
 [node name="Player" parent="." instance=ExtResource("4_liofc")]
 
-[node name="GrabbableBox" type="StaticBody3D" parent="."]
+[node name="GrabbableBox" type="RigidBody3D" parent="."]
 transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, -5.76016, 0.738372, -3.94465)
+script = ExtResource("5_fayr5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrabbableBox"]
 shape = SubResource("BoxShape3D_v0vgn")
