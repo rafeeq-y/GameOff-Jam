@@ -16,10 +16,7 @@ func in_range() -> void:
 func out_of_range() -> void:
 	get_mesh().material_overlay = null
 	
-func interacted(target) -> void:
-	#TODO: set force direction of object to target
-	print("interacted")
-	print(target)
+
 	
 func throw() -> void:
 	#use impulse

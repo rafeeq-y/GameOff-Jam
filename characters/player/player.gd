@@ -151,4 +151,6 @@ func interact_cast() -> void:
 
 func interact() -> void:
 	if interact_cast_result and interact_cast_result.has_user_signal("interacted"):
-		interact_cast_result.emit_signal("interacted", $HoverObjectShapeCast.global_position)
+		interact_cast_result.emit_signal("interacted", %HoverArea.global_position)
+		
+		

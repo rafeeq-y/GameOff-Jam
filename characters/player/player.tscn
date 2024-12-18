@@ -217,7 +217,7 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2la5a"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_yqd6n"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_paqly"]
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIM", "OVERHEAD_SHAPE_CAST")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -342,9 +342,10 @@ script = ExtResource("11_gctk3")
 [node name="JumpingState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("11_111kb")
 
-[node name="HoverObjectShapeCast" type="ShapeCast3D" parent="."]
-transform = Transform3D(2.46578, 0, 0, 0, 1.29369, 0, 0, 0, 1.11362, -0.796559, 2.22091, -1.24444)
-shape = SubResource("SphereShape3D_yqd6n")
+[node name="HoverArea" type="ShapeCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.86723, 0.969574, -1.24444)
+shape = SubResource("CapsuleShape3D_paqly")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
 [connection signal="dashgo" from="PlayerStateMachine/DashState" to="." method="_on_dash_state_dashgo"]
